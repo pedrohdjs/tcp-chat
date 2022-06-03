@@ -1,17 +1,24 @@
 .PHONY: server client all runserver runclient
 
 server:
-	g++ ./server/main.cpp -o server/server
+	g++ \
+		./src/server/main.cpp \
+		./src/shared/Socket.cpp \
+		-o ./dist/server
 
 client:
-	g++ ./client/main.cpp -o client/client
+	g++ \
+		./src/client/main.cpp \
+		./src/shared/Socket.cpp \
+		-o ./dist/client
+
 
 all: 
 	make server
 	make client
 
 runserver: 
-	./server/server
+	./dist/server
 
 runclient:
-	./client/client
+	./dist/client
