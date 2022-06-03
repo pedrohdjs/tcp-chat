@@ -13,6 +13,7 @@
 
 
 #define MAX_MESSAGE_SIZE 4096
+#define MAX_CONNECTIONS 10
 
 using namespace std;
 
@@ -24,9 +25,16 @@ class Socket {
         /* Destrutor: fecha o socket antes de destruir o objeto */
         ~Socket();
 
+        /* Retorna o FD do socket */
+        int getFd();
+
+        /* Função para socket do lado de servidor.
+        Faz bind do socket na porta */
+        void bind();
+
         /* Função para socket do lado de servidor.
         Faz bind e começa a ouvir na porta estabelecida*/
-        void listen();
+        void listen(int maxConnections);
 
         /* Função para socket do lado de servidor.
         Aceita uma conexão e retorna seu descritor de arquivo (ou -1 no caso de erro)*/
@@ -37,10 +45,10 @@ class Socket {
         void connect();
         
         /* Envia mensagem */
-        void send(string msg);
+        static void send(int fd, string msg);
 
         /* Recebe mensagem */
-        string receive();
+        static string receive(int fd);
     
     private:
         int fd; /* File descriptor do socket */

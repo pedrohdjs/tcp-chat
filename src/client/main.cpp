@@ -5,14 +5,12 @@
 using namespace std;
 
 int main(){
-    cout << "Hello, client!!" << endl;
-
     Socket s = Socket("127.0.0.1", 3000);
     s.connect();
+    cout << "Cliente conectado com sucesso" << endl;
 
-    cout << "Conectei!!" << endl;
-
-    s.send("Cliente diz oi!");
+    string data = Socket::receive(s.getFd());
+    cout << "Dados recebidos do servidor: " << data << endl;
     
     return 0;
 }
