@@ -1,7 +1,7 @@
 #include "Socket.hpp"
 
 Socket::Socket (string addr, unsigned short port) {
-    this->fd = socket(AF_INET, SOCK_STREAM, 0);  
+    this->fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto);  
 
     if (this->fd == -1) {
         throw runtime_error("Falha ao criar socket");

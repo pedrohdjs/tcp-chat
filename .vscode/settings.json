@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "system_error": "cpp"
     }
 }
