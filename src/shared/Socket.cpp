@@ -23,9 +23,9 @@ int Socket::getFd () {
 void Socket::bind() {
     int reuse = 1;
 
-    // if (setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse) == -1){
-    //     throw std::runtime_error("Falha ao fazer definir opcoes do socket");
-    // }
+    if (setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse) == -1){
+        throw std::runtime_error("Falha ao fazer definir opcoes do socket");
+    }
 
     if (::bind(this->fd, (struct sockaddr *)&this->address, sizeof(this->address)) == -1){
         throw std::runtime_error("Falha ao fazer bind do socket com a porta passada");

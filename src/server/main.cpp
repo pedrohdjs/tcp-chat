@@ -18,8 +18,5 @@ int main(){
     string data = Socket::receive(fd);
     cout << "Dados recebidos do cliente: " << data << endl;
 
-    data = Socket::receive(fd);
-    cout << "Dados recebidos do cliente: " << data << endl;
-
     return 0;
 }

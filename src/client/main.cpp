@@ -12,5 +12,8 @@ int main(){
     string data = Socket::receive(s.getFd());
     cout << "Dados recebidos do servidor: " << data << endl;
     
+    Socket::send(s.getFd(), "Cliente diz oi!");
+    cout << "Dados enviados para o servidor com sucesso!!" << endl;
+    
     return 0;
 }
