@@ -1,6 +1,7 @@
 #include "Socket.hpp"
 
 Socket::Socket (string addr, unsigned short port) {
+    cout << addr << ":" << port << endl;
     this->fd = socket(AF_INET, SOCK_STREAM, getprotobyname("tcp")->p_proto);  
 
     if (this->fd == -1) {
@@ -13,7 +14,7 @@ Socket::Socket (string addr, unsigned short port) {
 }
 
 Socket::~Socket () {
-    close(this->fd);
+    close();
 }
 
 int Socket::getFd () {
@@ -84,7 +85,6 @@ void Socket::send (int fd, string msg) {
     return;
 }
 
-
 string Socket::receive (int fd) {
     char buffer[MAX_MESSAGE_SIZE];
     memset(buffer, 0, MAX_MESSAGE_SIZE);
@@ -97,4 +97,8 @@ string Socket::receive (int fd) {
     }
 
     return string(buffer);
+}
+
+void Socket::close(){
+    ::close(fd);
 }

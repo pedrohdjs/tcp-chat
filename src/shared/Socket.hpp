@@ -20,7 +20,8 @@ using namespace std;
 class Socket {
     public: 
         /* Constrói o socket com base em um endereço ipv4 e uma porta. */
-        Socket(string addr, unsigned short port);
+        Socket(string addr = "127.0.0.1", unsigned short port = 3000);
+
 
         /* Destrutor: fecha o socket antes de destruir o objeto */
         ~Socket();
@@ -49,6 +50,9 @@ class Socket {
 
         /* Recebe mensagem */
         static string receive(int fd);
+
+        /* Fecha o socket */
+        void close();
     
     private:
         int fd; /* File descriptor do socket */

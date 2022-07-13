@@ -3,7 +3,9 @@
 server:
 	g++ \
 		./src/server/main.cpp \
+		./src/server/lib/Server.cpp \
 		./src/shared/Socket.cpp \
+		-pthread \
 		-o ./dist/server
 
 client:
@@ -11,7 +13,6 @@ client:
 		./src/client/main.cpp \
 		./src/shared/Socket.cpp \
 		-o ./dist/client
-
 
 all: 
 	make server
