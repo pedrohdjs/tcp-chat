@@ -77,7 +77,7 @@ void Socket::send (int fd, string msg) {
         
         bytes_sent = ::send(fd, chunk.c_str(), chunk.size(), 0);
 
-        if (bytes_sent == -1) {
+        if (bytes_sent <= 0) {
             throw runtime_error("Falha ao enviar mensagem");
         }
     }
@@ -92,7 +92,8 @@ string Socket::receive (int fd) {
 
     bytes_read = ::recv(fd, buffer, MAX_MESSAGE_SIZE, 0);
     
-    if (bytes_read == -1) {
+    if (bytes_read <= 0) {
+        cout << "Error: " << errno << endl;
         throw runtime_error("Falha ao receber mensagem");
     }
 

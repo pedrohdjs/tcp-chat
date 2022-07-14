@@ -9,11 +9,24 @@ int main(){
     s.connect();
     cout << "Cliente conectado com sucesso" << endl;
 
-    string data = Socket::receive(s.getFd());
-    cout << "Dados recebidos do servidor: " << data << endl;
+    while (true){
+        string msg;
+        getline(cin, msg, '\n');
+        try{
+            Socket::send(s.getFd(), msg);
+        }
+        catch (exception e){
+            cout << "Servidor desconectado" << endl;
+            break;
+        }
+    }
     
-    Socket::send(s.getFd(), "Cliente diz oi!");
-    cout << "Dados enviados para o servidor com sucesso!!" << endl;
+
+    // string data = Socket::receive(s.getFd());
+    // cout << "Dados recebidos do servidor: " << data << endl;
+    
+    // Socket::send(s.getFd(), "Cliente diz oi!");
+    // cout << "Dados enviados para o servidor com sucesso!!" << endl;
     
     return 0;
 }

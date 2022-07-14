@@ -10,7 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
+#include <fcntl.h>
 
 #define MAX_MESSAGE_SIZE 4096
 #define MAX_CONNECTIONS 10

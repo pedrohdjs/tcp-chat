@@ -1,9 +1,12 @@
 #pragma once
 
 #include "../../shared/Socket.hpp"
+#include "./Client.hpp"
 
 #include <iostream>
 #include <thread>
+#include <vector>
+#include <mutex>
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 3000
@@ -33,12 +36,6 @@ class Server {
         // Retorna a thread principal do servidor
         thread* get_worker();
 
-        // Para a thread
-        void stop();
-
-        // Retorna se o servidor deveria parar
-        bool get_should_stop();
-
     private:
         // Construtor privado para impedir criação direta pelo usuário
         Server();
@@ -46,8 +43,12 @@ class Server {
         // O loop da thread
         void main_loop();
 
+        // Adiciona um cliente ao servidor
+        void add_client(Client* c);
+
         static Server* _instance; // A instância do server
         Socket s; // O socket que recebe as conexões
-        bool should_stop; // Define se o servidor deve parar
         thread* worker; // A thread que recebe conexões
+        vector<Client*> clients; //Os clientes conectados
+        mutex mut; // Mutex que controla o acesso aos dados
 };

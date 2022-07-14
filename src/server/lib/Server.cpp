@@ -2,6 +2,9 @@
 
 Server* Server::_instance = nullptr;
 
+Server::Server( ): s(SERVER_IP, SERVER_PORT){
+} 
+
 Server* Server::get_instance(){
     if(Server::_instance == nullptr){
         Server::_instance = new Server();
@@ -25,8 +28,11 @@ void Server::run(){
 
 void Server::main_loop(){
     cout << "Aguardando conexões" << endl;
-    while (!should_stop){
+    while (true){
         int fd = s.accept();
+        Client* c = new Client(fd);
+        add_client(c);
+        cout << "Cliente com FD " << fd << " conectado!" << endl;
     }
 }
 
@@ -34,10 +40,9 @@ thread* Server::get_worker(){
     return worker;
 }
 
-bool Server::get_should_stop(){
-    return should_stop;
+void Server::add_client(Client* c){
+    lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo
+    clients.push_back(c);
+    clients.back()->receive(); //Inicia o recebimento de mensagens vindas do cliente
+    cout << "Numero de clientes: " << clients.size() << endl;
 }
-
-Server::Server( ): s(SERVER_IP, SERVER_PORT){
-    should_stop = false;
-} 
