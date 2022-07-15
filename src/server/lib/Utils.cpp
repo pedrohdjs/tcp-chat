@@ -11,3 +11,7 @@ vector<string>split(string s, char delimiter){
 
     return res;
 }
+
+string message_string(string msg){
+    return string(START_MESSAGE).append(msg).append(string(END_MESSAGE));
+}

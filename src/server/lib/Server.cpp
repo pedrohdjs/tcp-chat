@@ -31,6 +31,15 @@ void Server::main_loop(){
     while (true){
         int fd = s.accept();
         Client* c = new Client(fd);
+
+        try {
+            c->send(message_string("/ack"));
+        }
+        catch (exception e){
+            delete c;
+            continue;
+        }
+
         add_client(c);
         cout << "Cliente com FD " << fd << " conectado!" << endl;
     }
@@ -44,5 +53,20 @@ void Server::add_client(Client* c){
     lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo
     clients.push_back(c);
     clients.back()->receive(); //Inicia o recebimento de mensagens vindas do cliente
-    cout << "Numero de clientes: " << clients.size() << endl;
+
+    // //DEBUG
+    // cout << endl;
+    // for(Client* cli : clients){
+    //     cout << cli->get_name() << ": " << cli->get_connected();
+    // }
+    // cout << endl;
+}
+
+unordered_map<string, Chatroom*> Server::get_chatrooms(){
+    return chatrooms;
+}
+
+void Server::add_chatroom(Chatroom* cr){
+    lock_guard<mutex> g(mut);
+    chatrooms[cr->get_name()] = cr;
 }

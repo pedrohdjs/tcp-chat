@@ -5,6 +5,7 @@ server:
 		./src/server/main.cpp \
 		./src/server/lib/Server.cpp \
 		./src/server/lib/Client.cpp \
+		./src/server/lib/Chatroom.cpp \
 		./src/server/lib/Utils.cpp \
 		./src/shared/Socket.cpp \
 		-pthread \
@@ -14,6 +15,7 @@ client:
 	g++ \
 		./src/client/main.cpp \
 		./src/shared/Socket.cpp \
+		-pthread \
 		-o ./dist/client
 
 all: 

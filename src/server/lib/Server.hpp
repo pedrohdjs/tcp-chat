@@ -2,16 +2,22 @@
 
 #include "../../shared/Socket.hpp"
 #include "./Client.hpp"
+#include "./Chatroom.hpp"
 
 #include <iostream>
 #include <thread>
 #include <vector>
 #include <mutex>
+#include <unordered_map>
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 3000
 
 using namespace std;
+
+// Forward declaration devido a dependências circulares
+class Client;
+class Chatroom;
 
 // Classe principal do servidor, contendo seus dados. 
 // Segue o Design Pattern do GoF "Singleton", especificado em
@@ -36,6 +42,14 @@ class Server {
         // Retorna a thread principal do servidor
         thread* get_worker();
 
+        // Adiciona um cliente ao servidor
+        void add_client(Client* c);
+
+        // Obtém as salas
+        unordered_map<string, Chatroom*> get_chatrooms();
+
+        // Adiciona uma chatroom
+        void add_chatroom(Chatroom* cr);
     private:
         // Construtor privado para impedir criação direta pelo usuário
         Server();
@@ -43,12 +57,10 @@ class Server {
         // O loop da thread
         void main_loop();
 
-        // Adiciona um cliente ao servidor
-        void add_client(Client* c);
-
         static Server* _instance; // A instância do server
         Socket s; // O socket que recebe as conexões
         thread* worker; // A thread que recebe conexões
         vector<Client*> clients; //Os clientes conectados
+        unordered_map<string, Chatroom*> chatrooms;
         mutex mut; // Mutex que controla o acesso aos dados
 };
