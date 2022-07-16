@@ -2,6 +2,8 @@
 #include <string>
 #include <thread>
 #include "../shared/Socket.hpp"
+#include "../shared/Constants.hpp"
+
 
 using namespace std;
 
@@ -20,7 +22,7 @@ void receive(int fd){
 }
 
 int main(){
-    Socket s = Socket("127.0.0.1", 3000);
+    Socket s = Socket(string(SERVER_IP), SERVER_PORT);
     s.connect();
     cout << "Cliente conectado com sucesso" << endl;
 

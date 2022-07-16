@@ -12,8 +12,7 @@
 #include <netdb.h>
 #include <fcntl.h>
 
-#define MAX_MESSAGE_SIZE 4096
-#define MAX_CONNECTIONS 10
+#include "./Constants.hpp"
 
 using namespace std;
 
@@ -40,6 +39,12 @@ class Socket {
         /* Função para socket do lado de servidor.
         Aceita uma conexão e retorna seu descritor de arquivo (ou -1 no caso de erro)*/
         int accept();
+
+        /* Função para socket do lado de servidor.
+        Aceita uma conexão e retorna seu descritor de arquivo (ou -1 no caso de erro),
+        além de salvar o IP do usuário que entrou na string s*/
+        int accept(string* s);
+
 
         /* Função para socket do lado de cliente
         Conecta a um servidor */

@@ -36,6 +36,9 @@ class Chatroom{
         // Desmuta um cliente
         void unmute_client(string name);
 
+        // Obtém o IPv4 do usuário com o nome passado
+        string get_client_ip(string name);
+
         // Retorna o nome da chatroom
         string get_name();
     private:

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../../shared/Socket.hpp"
-#include "./Utils.hpp"
+#include "../../shared/Utils.hpp"
+#include "../../shared/Constants.hpp"
 #include "./Chatroom.hpp"
 #include "./Server.hpp"
 
@@ -10,19 +11,14 @@
 #include <string>
 #include <mutex>
 
-#define START_MESSAGE "/startmsg/"
-#define END_MESSAGE "/endmsg/"
-#define MAX_TRIES 5
 
 using namespace std;
 
 //Classe que representa um cliente conectado ao servidor
 class Client{
     public:
-        // Constrói um cliente com o FD passado
-        Client(int fd);
-
-        ~Client();
+        // Constrói um cliente com o FD e o IP passados
+        Client(int fd, string ip);
 
         bool operator==(const Client& other);
 
@@ -50,6 +46,9 @@ class Client{
 
         //Sai da sala atual
         void exit_cr();
+
+        // Retorna a string com o IPv4 do usuário
+        string get_ip();
     private:
         // O loop principal do recebimento de mensagens
         void main_loop();
@@ -58,6 +57,7 @@ class Client{
         void run_command(string command);
 
         int fd; // Descritor de arquivo
+        string ip; // String com o IP do usuário
         bool is_admin; // Indica se o cliente é administrador do servidor atual
         bool is_muted; // Indica se o cliente está mutado
         string name; // O nome do cliente

@@ -14,6 +14,7 @@ void Chatroom::send(string msg){
 }
 
 void Chatroom::add_client(Client* c){
+    this->send(c->get_name().append(" entrou na sala."));
     lock_guard<mutex> g(mut);
     clients.push_back(c);
 }
@@ -73,4 +74,14 @@ void Chatroom::unmute_client(string name){
 
 string Chatroom::get_name(){
     return name;
+}
+
+string Chatroom::get_client_ip(string name){
+    lock_guard<mutex> g(mut);
+    for(Client* c : clients){
+        if(c->get_name() == name){
+            return c->get_ip();
+        }
+    }
+    return string("Usuário não encontrado");
 }

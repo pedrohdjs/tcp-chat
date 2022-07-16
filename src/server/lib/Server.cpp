@@ -29,8 +29,9 @@ void Server::run(){
 void Server::main_loop(){
     cout << "Aguardando conexões" << endl;
     while (true){
-        int fd = s.accept();
-        Client* c = new Client(fd);
+        string ip;
+        int fd = s.accept(&ip);
+        Client* c = new Client(fd, ip);
 
         try {
             c->send("/ack");
@@ -41,7 +42,7 @@ void Server::main_loop(){
         }
 
         add_client(c);
-        cout << "Cliente com FD " << fd << " conectado!" << endl;
+        cout << "Cliente com FD " << fd << " e IP " << ip << " conectado!" << endl;
     }
 }
 

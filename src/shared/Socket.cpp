@@ -53,6 +53,22 @@ int Socket::accept() {
     return client_fd;
 }
 
+int Socket::accept(string* s){
+    int client_fd;
+    struct sockaddr_storage client_address;
+    socklen_t client_address_size = sizeof client_address;
+
+    client_fd = ::accept(this->fd, (struct sockaddr *) &client_address, &client_address_size);
+    
+    struct in_addr addr = ((struct sockaddr_in*)&client_address)->sin_addr;
+
+    char ip_c_str[INET_ADDRSTRLEN];
+    inet_ntop( AF_INET, &addr, ip_c_str, INET_ADDRSTRLEN );
+    (*s) = string(ip_c_str);
+
+    return client_fd;
+}
+
 void Socket::connect () {
     if (::connect(this->fd, (struct sockaddr *) &this->address, sizeof(this->address)) == -1) {
         throw runtime_error("Falha ao conectar o socket");

@@ -1,16 +1,13 @@
 #include "./Client.hpp"
 
-Client::Client(int fd){
+Client::Client(int fd, string ip){
     this->fd = fd;
+    this->ip = ip;
     connected = true;
     is_muted = false;
     is_admin = false;
     name = "Anon";
     this->cr = nullptr;
-}
-
-Client::~Client(){
-    cout << "Chamou o destrutor" << endl;
 }
 
 bool Client::operator==(const Client& other){
@@ -148,7 +145,10 @@ void Client::run_command(string command){
             this->cr->remove_client(arg);
             this->send("Você removeu o usuário.");
         }
-
+        else if(command == "/whois" && arg.size() > 0){
+            string ip = this->cr->get_client_ip(arg);
+            this->send(string("IP do usuário: ").append(ip));
+        }
         else{
             this->send("O comando passado é inválido.");
         }
@@ -223,4 +223,8 @@ void Client::exit_cr(){
         cr = nullptr;
     }
     this->send("/exit");
+}
+
+string Client::get_ip(){
+    return ip;
 }

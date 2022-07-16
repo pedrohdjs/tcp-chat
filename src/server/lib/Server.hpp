@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../shared/Constants.hpp"
 #include "../../shared/Socket.hpp"
 #include "./Client.hpp"
 #include "./Chatroom.hpp"
@@ -10,8 +11,6 @@
 #include <mutex>
 #include <unordered_map>
 
-#define SERVER_IP "127.0.0.1"
-#define SERVER_PORT 3000
 
 using namespace std;
 
