@@ -4,8 +4,17 @@ Client::Client(int fd){
     this->fd = fd;
     connected = true;
     is_muted = false;
+    is_admin = false;
     name = "Anon";
     this->cr = nullptr;
+}
+
+Client::~Client(){
+    cout << "Chamou o destrutor" << endl;
+}
+
+bool Client::operator==(const Client& other){
+    return this->fd == other.fd;
 }
 
 void Client::receive(){
@@ -53,7 +62,12 @@ void Client::main_loop(){
             }
             else{ //É uma mensagem usual. Encaminhar para o canal, se houver canal.
                 msg = string("").append(name).append(":").append(msg);
-                this->send(msg);
+                if(this->cr != nullptr){
+                    cr->send(msg);
+                }
+                else{
+                    this->send("Entre em uma sala com /join para enviar mensagens.");
+                }
             }
 
             message_finished = true;
@@ -71,13 +85,73 @@ void Client::run_command(string command){
     string arg = split_results.size() >= 2 ? split_results[1] : "";
 
     if (command == "/ping"){
-        this->send(message_string("pong"));
+        this->send("pong");
+        return;
+    }
+    else if (command == "/quit"){
+        if(cr != nullptr){
+            cr->remove_client(this);
+        }
+        this->disconnect();
+        return;
     }
     else if(command == "/nickname" && arg.size() > 0 && arg.size() < 50){
         mut.lock();
         this->name = arg;
         mut.unlock();
         this->send("Seu nome foi alterado.");
+        return;
+    }
+    else if(command == "/join" && arg.size() > 0){        
+        if(!Chatroom::is_name_valid(arg)){
+            this->send("O nome da sala passado é inválido.");
+            return;
+        }
+
+        //Sai da sala atual
+        if(this->cr != nullptr){
+            this->cr->remove_client(this);
+        }
+
+
+        Server* s = Server::get_instance();
+        unordered_map<string, Chatroom*> chatrooms = s->get_chatrooms();
+        if(!chatrooms.count(arg)){ //Sala ainda não existe, criar e fazer do usuário admin
+            Chatroom* new_cr = new Chatroom(arg);
+            new_cr->add_client(this);
+            s->add_chatroom(new_cr);
+            mut.lock();
+            this->cr = new_cr;
+            this->is_admin = true;
+            mut.unlock();
+            this->send("Você entrou no canal como admin.");
+        }
+        else{ //Sala existente
+            chatrooms[arg]->add_client(this);
+            mut.lock();
+            this->is_admin = false;
+            this->cr = chatrooms[arg];
+            mut.unlock();
+            this->send("Você entrou no canal.");
+        }
+    }
+    else if(this->cr != nullptr && this->is_admin){ //Comandos de administrador
+        if(command == "/mute" && arg.size() > 0){
+            this->cr->mute_client(arg);
+            this->send("Você mutou o usuário.");
+        }
+        else if(command == "/unmute" && arg.size() > 0){
+            this->cr->unmute_client(arg);
+            this->send("Você desmutou o usuário.");
+        }
+        else if(command == "/kick" && arg.size() > 0){
+            this->cr->remove_client(arg);
+            this->send("Você removeu o usuário.");
+        }
+
+        else{
+            this->send("O comando passado é inválido.");
+        }
     }
     else{
         this->send("O comando passado é inválido ou não autorizado.");
@@ -85,8 +159,9 @@ void Client::run_command(string command){
 }
 
 void Client::send(string msg){
+    msg = message_string(msg);
     try{
-        Socket::send(fd,message_string(msg));
+        Socket::send(fd,msg);
         return;
     }
     catch(exception e){
@@ -119,21 +194,33 @@ Chatroom* Client::get_cr(){
 void Client::mute(){
     lock_guard<mutex> g(mut);
     is_muted = true;
+    this->send("Você foi mutado.");
 }
 
 void Client::unmute(){
     lock_guard<mutex> g(mut);
     is_muted = false;
+    this->send("Você foi desmutado.");
 }
 
 void Client::disconnect(){
+    if(!connected) return;
+    
     try{
-        this->send(message_string("/disconnect"));
+        this->send("/disconnect");
     }
     catch (exception e){
-        //Mensagem não pôde ser enviada.
+        //Mensagem não pôde ser enviada. Cliente provavelmente crashou.
     }
 
     lock_guard<mutex> g(mut);
     connected = false;
+}
+
+void Client::exit_cr(){
+    lock_guard<mutex> g(mut);
+    if(this->cr != nullptr){
+        cr = nullptr;
+    }
+    this->send("/exit");
 }

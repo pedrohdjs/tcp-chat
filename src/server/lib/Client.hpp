@@ -22,6 +22,8 @@ class Client{
         // Constrói um cliente com o FD passado
         Client(int fd);
 
+        ~Client();
+
         bool operator==(const Client& other);
 
         // Inicia o recebimento de mensagens do cliente em uma thread separada
@@ -45,6 +47,9 @@ class Client{
 
         // Desconecta o cliente
         void disconnect();
+
+        //Sai da sala atual
+        void exit_cr();
     private:
         // O loop principal do recebimento de mensagens
         void main_loop();

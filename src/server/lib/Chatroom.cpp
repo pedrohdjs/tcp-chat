@@ -22,14 +22,35 @@ bool Chatroom::is_name_valid(string name){
     return true;
 }
 
-// void Chatroom::remove_client(string name){
-//     lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo
-//     for(vector<Client*>::iterator it = clients.begin(); it != clients.end(); it++){
-//         if((*it)->get_name() == name){
-//             clients.erase(it);
-//         }
-//     }
-// }
+void Chatroom::remove_client(string name){
+    lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo
+
+    vector<Client*>::iterator it = clients.begin();
+    while(it != clients.end()){
+        if((*it)->get_name() == name){
+            (*it)->exit_cr();
+            it = clients.erase(it);
+        }
+        else{
+            it++;
+        }
+    }
+}
+
+void Chatroom::remove_client(Client* c){
+    lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo
+    vector<Client*>::iterator it = clients.begin();
+    while(it != clients.end()){
+        if(*(*it) == *c){
+            (*it)->exit_cr();
+            it = clients.erase(it);
+        }
+        else{
+            it++;
+        }
+    }
+}
+
 
 void Chatroom::mute_client(string name){
     lock_guard<mutex> g(mut); //Tranca o acesso aos recursos enquanto está em escopo

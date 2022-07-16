@@ -25,7 +25,10 @@ class Chatroom{
         void add_client(Client* c);
 
         // // Remove um cliente
-        // void remove_client(string name);
+        void remove_client(string name);
+
+        // Remove um cliente
+        void remove_client(Client* c);
 
         // Muta um cliente
         void mute_client(string name);

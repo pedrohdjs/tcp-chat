@@ -33,7 +33,7 @@ void Server::main_loop(){
         Client* c = new Client(fd);
 
         try {
-            c->send(message_string("/ack"));
+            c->send("/ack");
         }
         catch (exception e){
             delete c;

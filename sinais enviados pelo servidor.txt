@@ -1,0 +1,5 @@
+O servidor pode enviar ao cliente:
+
+/ack -> reconhece que o cliente entrou no servidor
+/disconnect -> o cliente foi desconectado do servidor
+/exit -> o cliente foi removido da chatroom em que estava
