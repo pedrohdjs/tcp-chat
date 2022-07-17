@@ -6,8 +6,8 @@
 - Tarcídio Antonio Junior - 10748347
 
 ## Instruções do makefile
-- make all: faz a build do cliente e do servidor
-- make server: faz a build do servidor
-- make client: faz a build do cliente
-- make runserver: executa o servidor
-- make runclient: executa o cliente
+- `make all`: faz a build do cliente e do servidor
+- `make server`: faz a build do servidor
+- `make client`: faz a build do cliente
+- `make runserver`: executa o servidor
+- `make runclient`: executa o cliente
