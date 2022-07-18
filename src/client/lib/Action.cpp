@@ -27,8 +27,8 @@ void Action::receive_message(int fd) {
             break;
         }
 
-        regex regexp(
-            "(/startmsg/)(.*?)(/endmsg/)");  // Grupo entre /startmsg/ e /endmsg/
+        regex regexp("(/startmsg/)(.*?)(/endmsg/)");  // Grupo entre /startmsg/
+                                                      // e /endmsg/
         smatch m;
         regex_search(msg, m, regexp);
         msg = m[2];
@@ -57,9 +57,10 @@ bool Action::send_message(string message) {
 }
 
 void Action::quit() {
-    if (!this->check_connection()) return;
-    this->send_message("/quit");
-    this->t.join();
+    if (this->check_connection()) {
+        this->send_message("/quit");
+        this->t.join();
+    }
     exit(0);
 }
 

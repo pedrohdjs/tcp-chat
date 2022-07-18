@@ -1,3 +1,4 @@
+#include <csignal>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -16,23 +17,29 @@ int main() {
         string msg;
         getline(cin, msg, '\n');
 
-        vector<string> split_results = split(msg, ' ');
-        string command = split_results[0];
-
-        if (command == "/connect")
-            act->connect(split_results);
-
-        else if (command == "/quit")
+        if (msg.empty()) {
             act->quit();
+        }
 
-        else if (command == "/help")
-            act->help();
+        else {
+            vector<string> split_results = split(msg, ' ');
+            string command = split_results[0];
 
-        else if (command == "/clear")
-            act->clear();
+            if (command == "/connect")
+                act->connect(split_results);
 
-        else
-            act->send_message(msg);
+            else if (command == "/quit")
+                act->quit();
+
+            else if (command == "/help")
+                act->help();
+
+            else if (command == "/clear")
+                act->clear();
+
+            else
+                act->send_message(msg);
+        }
     }
 
     return 0;
