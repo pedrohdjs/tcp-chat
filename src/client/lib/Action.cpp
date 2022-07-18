@@ -116,6 +116,10 @@ void Action::help() {
          << "\t\t"
          << "/help" << endl;
 
+    cout << "/quit"
+         << "\t\t"
+         << "/quit" << endl;
+
     cout << endl;
 }
 
