@@ -1,6 +1,8 @@
 .PHONY: server client all runserver runclient
 
 server:
+	mkdir -p dist \
+	&& \
 	g++ \
 		./src/server/main.cpp \
 		./src/server/lib/Server.cpp \
@@ -12,6 +14,8 @@ server:
 		-o ./dist/server
 
 client:
+	mkdir -p dist \
+	&& \
 	g++ \
 		./src/client/main.cpp \
 		./src/client/lib/Action.cpp \
