@@ -50,6 +50,15 @@
         "condition_variable": "cpp",
         "csignal": "cpp",
         "ctime": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "bitset": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     }
 }
