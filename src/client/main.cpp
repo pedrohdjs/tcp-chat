@@ -1,54 +1,39 @@
 #include <iostream>
 #include <string>
-#include <thread>
-#include "../shared/Socket.hpp"
-#include "../shared/Constants.hpp"
+#include <vector>
 
+#include "../shared/Utils.hpp"
+#include "lib/Action.hpp"
 
 using namespace std;
 
-void receive(int fd){
-    string msg;
-    while(true){
-        try{
-            msg = Socket::receive(fd);
-        }
-        catch (exception e){
-            cout << "Deu ruim" << endl;
-            break;
-        }
-        cout << msg << endl;
-    }
-}
+int main() {
+    Action *act = new Action();
 
-int main(){
-    Socket s = Socket(string(SERVER_IP), SERVER_PORT);
-    s.connect();
-    cout << "Cliente conectado com sucesso" << endl;
+    act->clear();
 
-    thread t(&receive, s.getFd());
-
-    while (true){
+    while (true) {
         string msg;
         getline(cin, msg, '\n');
-        msg = string("/startmsg/").append(msg).append(string("/endmsg/"));
-        
-        try{
-            Socket::send(s.getFd(), msg);
-        }
-        catch (exception e){
-            cout << "Servidor desconectado" << endl;
-            break;
-        }
-    }
-    
-    t.join();
 
-    // string data = Socket::receive(s.getFd());
-    // cout << "Dados recebidos do servidor: " << data << endl;
-    
-    // Socket::send(s.getFd(), "Cliente diz oi!");
-    // cout << "Dados enviados para o servidor com sucesso!!" << endl;
-    
+        vector<string> split_results = split(msg, ' ');
+        string command = split_results[0];
+
+        if (command == "/connect")
+            act->connect(split_results);
+
+        else if (command == "/quit")
+            act->quit();
+
+        else if (command == "/help")
+            act->help();
+
+        else if (command == "/clear")
+            act->clear();
+
+        else
+            act->send_message(msg);
+    }
+
     return 0;
 }

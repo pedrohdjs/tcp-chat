@@ -14,7 +14,9 @@ server:
 client:
 	g++ \
 		./src/client/main.cpp \
+		./src/client/lib/Action.cpp \
 		./src/shared/Socket.cpp \
+		./src/shared/Utils.cpp \
 		-pthread \
 		-o ./dist/client
 
