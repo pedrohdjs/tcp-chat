@@ -41,6 +41,14 @@ O sistema fornece, ao cliente, as seguintes operações:
 
 Além disso, quando conectado a uma sala, basta digitar qualquer texto, sem o indicador de comando `/` para enviar uma mensagem aos demais participantes.
 
+## Funcionamento
+
+Clique abaixo para ser redirecionado à apresentação do funcionamento do sistema:
+
+<p align="center">
+  <a href="https://youtu.be/XpZ4AN1XwRo"><img src="images/thumb.png" width=800/></a>
+</p>
+
 ## Autores
 
 - Matheus Henrique de Cerqueira Pinto (11911104)
