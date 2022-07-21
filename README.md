@@ -39,8 +39,10 @@ O sistema fornece, ao cliente, as seguintes operações:
 - `/kick`: expulsa um usuário (`/kick nickanme`);
 - `/quit`: sai da aplicação.
 
+Além disso, quando conectado a uma sala, basta digitar qualquer texto, sem o indicador de comando `/` para enviar uma mensagem aos demais participantes.
+
 ## Autores
 
 - Matheus Henrique de Cerqueira Pinto (11911104)
 - Pedro Henrique Dias Junqueira de Souza (11294312)
-- Tarcídio Antonio Junior - 10748347
+- Tarcídio Antonio Junior (10748347)
